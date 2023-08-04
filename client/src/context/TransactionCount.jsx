@@ -23,7 +23,9 @@ export const TransactionsProvider = ({ children }) => {
   const [transactions, setTransactions] = useState([]);
 
   const handleChange = (e, name) => {
+    console.log(e.target.value)
     setformData((prevState) => ({ ...prevState, [name]: e.target.value }));
+    console.log(formData)
   };
 
   const getAllTransactions = async () => {
@@ -33,9 +35,11 @@ export const TransactionsProvider = ({ children }) => {
 
         const availableTransactions = await transactionsContract.getAllTransactions();
 
+        console.log(availableTransactions)
+
         const structuredTransactions = availableTransactions.map((transaction) => ({
-          addressTo: transaction.receiver,
-          addressFrom: transaction.sender,
+          addressTo: transaction[1],
+          addressFrom: transaction[0],
           timestamp: new Date(transaction.timestamp.toNumber() * 1000).toLocaleString(),
           message: transaction.message,
           keyword: transaction.keyword,
